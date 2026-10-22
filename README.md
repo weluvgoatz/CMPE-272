@@ -1,3 +1,9 @@
 # CMPE-272
 
-Install requirements.txt and run src/model.ipynb. paste the 8 CSVs into a data/ directory.
+This project is run in WSL using Ubuntu.
+
+Paste the 8 CSVs from the CIC IDS 2017 Dataset into a `data/` directory alongside `src/`.
+
+Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
+
+Install `requirements.txt` and run `src/model.ipynb` in Jupyter (Run `jupyter lab` and follow the instructions).
