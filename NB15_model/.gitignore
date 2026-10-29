@@ -1,0 +1,8 @@
+.venv/
+data/
+model.joblib
+sample.csv
+sample_predictions.csv
+predictions.csv
+.DS_Store
+.ipynb_checkpoints/
