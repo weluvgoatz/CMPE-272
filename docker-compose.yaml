@@ -1,0 +1,33 @@
+services:
+  victim:
+    build: ./victim
+    networks:
+      labnet:
+        ipv4_address: 10.10.10.10
+
+  client:
+    build: ./client
+    networks:
+      labnet:
+        ipv4_address: 10.10.10.20
+    depends_on:
+      - victim
+
+  monitor:
+    build: ./monitor
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: "service:victim"
+    volumes:
+      - ./captures:/captures
+    depends_on:
+      - victim
+
+networks:
+  labnet:
+    driver: bridge
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.10.0/24
