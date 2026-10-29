@@ -11,10 +11,18 @@ Install `requirements.txt` by running `pip install -r requirements.txt` and run 
 Docker setup:
 
 docker compose up --build -d victim client
+
 docker compose up --build -d monitor
+
 docker exec -it cmpe-272-monitor-1 bash
 
+
+
 ip a
+
 cicflowmeter -i eth0 -c /captures/benign_flows.csv
+
 OR
+
 tcpdump -i eth0 -w /captures/benign_traffic.pcap
+
