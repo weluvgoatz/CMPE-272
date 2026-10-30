@@ -10,19 +10,16 @@ Install `requirements.txt` by running `pip install -r requirements.txt` and run 
 
 Docker setup:
 
-docker compose up --build -d victim client
+`docker compose up --build -d victim client`
 
-docker compose up --build -d monitor
+`docker compose up --build -d monitor`
 
-docker exec -it cmpe-272-monitor-1 bash
+`docker exec -it cmpe-272-monitor-1 bash`
 
+Now that you should be inside the container:
 
+`ip a`
 
-ip a
+`tcpdump -i eth0 -w /captures/benign_traffic.pcap`  
 
-cicflowmeter -i eth0 -c /captures/benign_flows.csv
-
-OR
-
-tcpdump -i eth0 -w /captures/benign_traffic.pcap
-
+and then `Ctrl+C` after a couple moments.
