@@ -46,7 +46,9 @@ Then run `python sniffer.py` and when it's done the data should be available in 
 
 Finally, run `new_predict.py`.
 
-# TODO
+# TODO / ordering
+
+Step 1 is way more important than step 2; if necessary (like if time runs out), we can just implement a binary classification 0=BENIGN 1=ATTACK methodology. 
 
 1) 
 
