@@ -2,7 +2,7 @@
 
 This project is run in WSL using Ubuntu.
 
-# Training Model
+# Training Model - HGB
 
 Paste the 8 CSVs from the CIC IDS 2017 Dataset into a `data/` directory alongside `src/`.
 
