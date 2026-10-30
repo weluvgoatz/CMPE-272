@@ -28,6 +28,8 @@ Now that you should be inside the container:
 
 and then `Ctrl+C` after a couple moments.
 
+Then run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`.
+
 # Model predictions
 
-Then run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`
+Finally, run `new_predict.py`.
