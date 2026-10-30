@@ -23,3 +23,5 @@ Now that you should be inside the container:
 `tcpdump -i eth0 -w /captures/benign_traffic.pcap`  
 
 and then `Ctrl+C` after a couple moments.
+
+Then run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`
