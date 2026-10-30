@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 import joblib
+from sklearn.metrics import accuracy_score, f1_score, classification_report, confusion_matrix
 
 # Artifacts saved from your training notebook
 feature_cols = joblib.load("src/feature_columns.joblib")   # exact training column order
@@ -50,7 +51,11 @@ final_cols = ['Destination Port', 'Flow Duration', 'Total Fwd Packets',
        # 'Attack Type', 'Attack Number'
        # removed for predicting
        ]
-data = data[final_cols]
+pred_cols = ['Attack Type']
+data.rename(columns={"Label": "Attack Type"}, inplace=True)
+data['Attack Type'] = np.where(data['Attack Type'] == 'BENIGN', 0, 1)
+y_test = data[pred_cols].copy()
+data = data.filter(items=final_cols)
 print(data)
 
 # Clean the same way as in training
@@ -75,3 +80,9 @@ X = data[feature_cols].astype(float)
 # Apply the SAME fitted scaler, then predict
 preds = model.predict(X)
 print(preds)
+
+y_pred = model.predict(X)
+print(f"Test accuracy: {accuracy_score(y_test, y_pred):.4f}")
+print(f"Test F1:       {f1_score(y_test, y_pred):.4f}")
+print(confusion_matrix(y_test, y_pred))
+print(classification_report(y_test, y_pred, target_names=["Benign", "Attack"], digits=4))

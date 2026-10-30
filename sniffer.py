@@ -87,6 +87,8 @@ for key, data in raw_flows.items():
             if F & 0x10: fwd_flags["ACK"] += 1; flags["ACK"] += 1
             if F & 0x20: fwd_flags["URG"] += 1; flags["URG"] += 1
             if len(p['TCP'].payload) > 0: fwd_act_data_pkts += 1
+            if F & 0x80: fwd_flags["CWR"] += 1; flags["CWR"] += 1 
+            if len(p['TCP'].payload) > 0: fwd_act_data_pkts += 1
 
     for p in bwd_pkts:
         if p.haslayer('TCP'):
@@ -98,6 +100,7 @@ for key, data in raw_flows.items():
             if F & 0x08: bwd_flags["PSH"] += 1; flags["PSH"] += 1
             if F & 0x10: bwd_flags["ACK"] += 1; flags["ACK"] += 1
             if F & 0x20: bwd_flags["URG"] += 1; flags["URG"] += 1
+            if F & 0x80: bwd_flags["CWR"] += 1; flags["CWR"] += 1
 
     # 4. Header Segments
     fwd_header_len = sum([len(p['IP']) - len(p['IP'].payload) for p in fwd_pkts if p.haslayer('IP')])
@@ -116,8 +119,10 @@ for key, data in raw_flows.items():
         "Flow Bytes/s": (sum(all_lens) / duration) if duration > 0 else 0,
         "Flow Packets/s": (len(all_lens) / duration) if duration > 0 else 0,
         "Flow IAT Mean": np.mean(flow_iats), "Flow IAT Std": np.std(flow_iats), "Flow IAT Max": max(flow_iats), "Flow IAT Min": min(flow_iats),
+        "Fwd IAT Total": sum(fwd_iats) if len(fwd_iats) > 0 else 0,
         "Fwd IAT Mean": np.mean(fwd_iats), "Fwd IAT Std": np.std(fwd_iats), "Fwd IAT Max": max(fwd_iats), "Fwd IAT Min": min(fwd_iats),
         "Bwd IAT Mean": np.mean(bwd_iats), "Bwd IAT Std": np.std(bwd_iats), "Bwd IAT Max": max(bwd_iats), "Bwd IAT Min": min(bwd_iats),
+        "Bwd IAT Total": sum(bwd_iats) if len(bwd_iats) > 0 else 0,
         "Fwd PSH Flags": fwd_flags["PSH"], "Bwd PSH Flags": bwd_flags["PSH"],
         "Fwd URG Flags": fwd_flags["URG"], "Bwd URG Flags": bwd_flags["URG"],
         "Fwd Header Length": fwd_header_len, "Bwd Header Length": bwd_header_len,
@@ -125,7 +130,7 @@ for key, data in raw_flows.items():
         "Min Packet Length": min(all_lens) if all_lens else 0, "Max Packet Length": max(all_lens) if all_lens else 0,
         "Packet Length Mean": np.mean(all_lens) if all_lens else 0, "Packet Length Std": np.std(all_lens) if all_lens else 0, "Packet Length Variance": np.var(all_lens) if all_lens else 0,
         "FIN Flag Count": flags["FIN"], "SYN Flag Count": flags["SYN"], "RST Flag Count": flags["RST"], "PSH Flag Count": flags["PSH"],
-        "ACK Flag Count": flags["ACK"], "URG Flag Count": flags["URG"], "CWR Flag Count": flags["CWR"], "ECE Flag Count": flags["ECE"],
+        "ACK Flag Count": flags["ACK"], "URG Flag Count": flags["URG"], "CWR Flag Count": flags["CWR"], "CWE Flag Count": flags["CWR"], "ECE Flag Count": flags["ECE"],
         "Down/Up Ratio": (len(bwd_pkts) / len(fwd_pkts)) if len(fwd_pkts) > 0 else 0,
         "Average Packet Size": (sum(all_lens) / len(all_lens)) if all_lens else 0,
         "Avg Fwd Segment Size": np.mean(fwd_lens) if fwd_lens else 0, "Avg Bwd Segment Size": np.mean(bwd_lens) if bwd_lens else 0,
