@@ -24,6 +24,19 @@ services:
     depends_on:
       - victim
 
+  attacker:
+    build: ./attacker
+    networks:
+      labnet:
+        ipv4_address: 10.10.10.40
+    depends_on:
+      - victim
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW   # needed for hping3/nmap raw socket crafting
+    volumes:
+      - ./logs:/logs
+
 networks:
   labnet:
     driver: bridge
