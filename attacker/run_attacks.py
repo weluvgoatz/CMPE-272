@@ -54,10 +54,6 @@ def _write_wordlist(path, words):
 
 
 def _run(cmd, timeout):
-    """Run a command and swallow the failure modes attacks are expected to
-    hit (floods get killed by timeout, hydra/nmap can exit nonzero).
-    Returns (returncode, stdout, stderr) -- stdout/stderr are "" if the
-    process timed out or never launched."""
     try:
         proc = subprocess.run(cmd, timeout=timeout, capture_output=True, text=True)
         return proc.returncode, proc.stdout, proc.stderr
