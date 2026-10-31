@@ -46,19 +46,34 @@ Then run `python sniffer.py` and when it's done the data should be available in 
 
 Finally, run `new_predict.py`.
 
+# Attack generation + detection
+
+`attacker/run_attacks.py` runs a shuffled set of attack scenarios (Port Scan via nmap,
+DoS Hulk + DDoS via hping3 flood, DoS Slowhttptest via slowhttptest, SSH/FTP brute force
+via hydra) against the `victim` container only. Each scenario's start/end timestamps and
+attack type are appended to `logs/attack_log.csv`. It's mounted as a volume
+(`./attacker:/app`), not baked into the Dockerfile, so attacks only happen when you
+explicitly run:
+
+`docker compose exec attacker python3 /app/run_attacks.py`
+
+To run it, the `victim` and `attacker` containers both need to be up
+(`docker compose up --build -d victim attacker`). No extra setup is required --
+`run_attacks.py` creates `logs/` and `logs/raw/` itself if they don't exist yet.
+
+The attack type names (`PortScan`, `DoS Hulk`, `DoS Slowhttptest`, `DDoS`, `SSH-Patator`,
+`FTP-Patator`) match the `attack_map` buckets already used in `src/model.ipynb`.
+
+Labeling captured flows with these attack windows (instead of leaving everything
+`BENIGN`) is a separate follow-up step, not yet wired in.
+
 # TODO / ordering
 
-Step 1 is way more important than step 2; if necessary (like if time runs out), we can just implement a binary classification 0=BENIGN 1=ATTACK methodology. 
+Step 1 is way more important than step 2; if necessary (like if time runs out), we can just implement a binary classification 0=BENIGN 1=ATTACK methodology.
 
-1) 
+1) Done -- see "Attack generation + detection" above.
 
-Create a python script that generates synthetic attacks, and run it in the attacker Docker container with:
-
-`docker compose exec attacker python3 /app/run_attacks.py` or whatever we want to call the script.
-
-It's important that this is not embedded in the Dockerfile for the attacker so that we're only explicitly declaring when attacks happen.
-
-2) 
+2)
 
 Export the attack mappings via joblib, and apply the mappings and label encodings to new data.
 

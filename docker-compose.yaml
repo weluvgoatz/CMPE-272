@@ -36,6 +36,7 @@ services:
       - NET_RAW   # needed for hping3/nmap raw socket crafting
     volumes:
       - ./logs:/logs
+      - ./attacker:/app   # run_attacks.py lives here, not in the Dockerfile
 
 networks:
   labnet:
