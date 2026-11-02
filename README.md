@@ -40,12 +40,6 @@ Now that you should be inside the container:
 
 and then `Ctrl+C` after a couple moments. If you want to exit the monitor interface, run `Ctrl+D` instead.
 
-Then run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`.
-
-# Model predictions
-
-Finally, run `new_predict.py`.
-
 # Attack generation + detection
 
 `attacker/run_attacks.py` runs a shuffled set of attack scenarios (Port Scan via nmap,
@@ -66,6 +60,16 @@ The attack type names (`PortScan`, `DoS Hulk`, `DoS Slowhttptest`, `DDoS`, `SSH-
 
 Labeling captured flows with these attack windows (instead of leaving everything
 `BENIGN`) is a separate follow-up step, not yet wired in.
+
+Run this while the python script is running:
+
+`tcpdump -i eth0 -s 0 -w /captures/attacker_traffic.pcap` 
+
+# Model predictions
+
+Run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`.
+
+Finally, run `new_predict.py`.
 
 # TODO / ordering
 
@@ -88,3 +92,9 @@ Then we can predict and compare results as we do in the model.
 `docker compose ps` or `docker ps` checks the container status.
 
 `docker stop <container_id_or_name>` stops a particular container, useful for stopping attacks.
+
+`cicflowmeter -f captures/attacker_traffic.pcap -c attacker_flows.csv`
+
+`./cfm captures/attacker_traffic.pcap outputs/`
+
+`./cfm captures/benign_traffic.pcap outputs/`
