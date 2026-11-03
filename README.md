@@ -71,21 +71,11 @@ Now you'll have a `/captures/` directory with attacker_traffic.pcap and benign_t
 
 Copy the produced CSVs to the `/data/` directory.
 
-Finally, run `new_predict.py`.
+Finally, run `new_predict.py`. It'll have a mid accuracy for now...
 
 # TODO / ordering
 
-Step 1 is way more important than step 2; if necessary (like if time runs out), we can just implement a binary classification 0=BENIGN 1=ATTACK methodology.
-
-1) Done -- see "Attack generation + detection" above.
-
-2)
-
-Export the attack mappings via joblib, and apply the mappings and label encodings to new data.
-
-Apparently, even though the model training does fit and transform, we should only do transform for the new data, to retain the integer encodings of the original.
-
-Then we can predict and compare results as we do in the model.
+Capture significantly more benign data from our system. Then, capture significantly more benign/attack data from our system and train the model with it.
 
 # Other useful commands
 
