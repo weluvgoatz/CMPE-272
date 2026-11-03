@@ -56,7 +56,9 @@ data = pd.concat([data_benign, data_attack], ignore_index=True)
 data.columns = data.columns.str.strip()
 
 # Keep only TCP flows
+print((data['Label'] == 'BENIGN').sum())
 data = data[data['Protocol'] == 6].copy()
+print((data['Label'] == 'BENIGN').sum())
 
 # Convert label to binary
 pred_cols = ['Attack Type']
