@@ -4,7 +4,7 @@ This project is run in WSL using Ubuntu.
 
 # Training Model - HGB
 
-Paste the 8 CSVs from the CIC IDS 2017 Dataset into a `data/` directory alongside `src/`.
+Paste the 5 CSVs from the CIC IDS 2017 Dataset (Engelen et al's fix) into a `fixed_data/` directory alongside `src/`.
 
 Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
 
@@ -67,7 +67,9 @@ Run this while the python script is running:
 
 # Model predictions
 
-Run `python sniffer.py` and when it's done the data should be available in `flows_output.csv`.
+Now you'll have a `/captures/` directory with attacker_traffic.pcap and benign_traffic.pcap. Run the fixed CICFlowMeter (Engelen et al's fix) on this directory.
+
+Copy the produced CSVs to the `/data/` directory.
 
 Finally, run `new_predict.py`.
 
@@ -98,3 +100,21 @@ Then we can predict and compare results as we do in the model.
 `./cfm captures/attacker_traffic.pcap outputs/`
 
 `./cfm captures/benign_traffic.pcap outputs/`
+
+`/home/weluv/CMPE-272/data/`
+
+`editcap -A "2017-07-07 5:00:00" -B "2017-07-07 5:30:00" data/Friday-WorkingHours.pcap data/FridaySlice.pcap`
+
+\usr\include\pcap
+
+sudo java -Djava.library.path="\usr\include\pcap" -jar CICFlowMeterV3.jar
+
+sudo java -Djava.library.path="\usr\lib" -jar CICFlowMeterV3.jar
+
+find . -name "*:Zone.Identifier" -type f -delete
+
+chmod +x gradlew
+
+./gradlew execute
+
+sudo reordercap attacker_traffic.pcap attacker_traffic_order.pcap
