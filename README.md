@@ -2,19 +2,11 @@
 
 This project is run in WSL using Ubuntu.
 
-# Training Model - HGB
-
-Paste the 5 CSVs from the CIC IDS 2017 Dataset (Engelen et al's fix) into a `fixed_data/` directory alongside `src/`.
-
-Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
-
-Install `requirements.txt` by running `pip install -r requirements.txt` and run `src/model.ipynb` in Jupyter (Run `jupyter lab` and follow the instructions).
-
 # Docker setup
 
 `docker compose up --build -d victim client monitor attacker`
 
-# Data production
+# Benign generation
 
 First clarify that this fails, because we want the attacks containerized:
 
@@ -61,6 +53,20 @@ Run this while the python script is running:
 
 `tcpdump -i eth0 -s 0 -w /captures/attacker_traffic.pcap` 
 
+Thus, we have generated our test data.
+
+# TODO - generate lots of more data
+
+Here, we need to keep the benign/attack generation scripts running for a long time and then feed them into fixed_data/ as a csv so that our model can be trained with them. It's important to keep the training data generated here separate from the test data generated previously.
+
+# Training Model - HGB
+
+Paste the 5 CSVs from the CIC IDS 2017 Dataset (Engelen et al's fix) into a `fixed_data/` directory alongside `src/`.
+
+Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
+
+Install `requirements.txt` by running `pip install -r requirements.txt` and run `src/model.ipynb` in Jupyter (Run `jupyter lab` and follow the instructions).
+
 # Model predictions
 
 First, you may want to reorder the pcap files:
@@ -77,7 +83,7 @@ Finally, run `new_predict.py`. It'll have a mid accuracy for now...
 
 # TODO / ordering
 
-Capture significantly more benign data from our system. Then, capture significantly more benign/attack data from our system and train the model with it.
+Capture significantly more benign data from our system. Then, capture significantly more benign/attack data from our system and train the model with it alongside CIC-IDS-2017.
 
 # Other useful commands
 
