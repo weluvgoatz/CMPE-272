@@ -12,11 +12,7 @@ Install `requirements.txt` by running `pip install -r requirements.txt` and run 
 
 # Docker setup
 
-`docker compose up --build -d victim client`
-
-`docker compose up --build -d monitor`
-
-`docker compose up --build -d attacker`
+`docker compose up --build -d victim client monitor attacker`
 
 # Data production
 
@@ -66,6 +62,12 @@ Run this while the python script is running:
 `tcpdump -i eth0 -s 0 -w /captures/attacker_traffic.pcap` 
 
 # Model predictions
+
+First, you may want to reorder the pcap files:
+
+`sudo reordercap attacker_traffic.pcap attacker_traffic_order.pcap`
+
+`sudo reordercap benign_traffic.pcap benign_traffic_order.pcap`
 
 Now you'll have a `/captures/` directory with attacker_traffic.pcap and benign_traffic.pcap. Run the fixed CICFlowMeter (Engelen et al's fix) on this directory.
 
