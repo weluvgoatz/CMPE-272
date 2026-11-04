@@ -59,7 +59,7 @@ Run this while the python script is running:
 
 Thus, we have generated our test data.
 
-# TODO - generate lots of more data
+# Potential TODO - generate lots of more data
 
 Here, we need to keep the benign/attack generation scripts running for a long time and then feed them into fixed_data/ as a csv so that our model can be trained with them. It's important to keep the training data generated here separate from the test data generated previously.
 
@@ -67,7 +67,7 @@ To generate only attacks, you should probably stop the client Docker container.
 
 # Process data
 
-First, you may want to reorder the pcap files:
+First, you may want to reorder the pcap files. Here's an example of how to do that:
 
 `sudo reordercap attacker_traffic_test.pcap attacker_traffic_test_order.pcap`
 
@@ -75,7 +75,7 @@ First, you may want to reorder the pcap files:
 
 or so...
 
-Now you'll have a `/captures/` directory with attacker_traffic.pcap and benign_traffic.pcap. Run the fixed CICFlowMeter (Engelen et al's fix) on this directory.
+Now you'll have a `/captures/` directory with some capture pcaps. Run the fixed CICFlowMeter (Engelen et al's fix) on this directory. Refer to that project for instructions on how to install it, but you basically enter CICFlowMeter's directory and run `./gradlew execute` (run `chmod +x gradlew` if permission is denied, and `find . -name "*:Zone.Identifier" -type f -delete` if you run into Zone Identifier issues).
 
 Copy the produced CSVs to the `/data/` directory, if they aren't there already.
 
@@ -91,11 +91,17 @@ Install `requirements.txt` by running `pip install -r requirements.txt` and run 
 
 # Model predictions
 
-Finally, run `new_predict.py`. It'll have a mid accuracy for now...
+Finally, run `new_predict.py`. It'll have a middling accuracy if you didn't inject new data into the training data, but will have almost-if-not exactly 100 if you do inject our data.
 
-# TODO / ordering
+# Results
 
-Capture significantly more benign data from our system. Then, capture significantly more benign/attack data from our system and train the model with it alongside CIC-IDS-2017.
+It is hard to determine the usefulness of this system, because you can have 2 results:
+
+1) If you insert new training data alongside the CIC-IDS-2017, the model will overfit to the new data.
+
+2) If you don't insert the new training data, the model will perform poorly due to irreconcilable differences (timeframes, packet windows, ports) between the CIC-IDS data capture and our system's data capture.
+
+However, the first path may be the better option despite its overfitting since it learns on specific attacks that happen to our system.
 
 # Other useful commands
 
@@ -104,29 +110,3 @@ Capture significantly more benign data from our system. Then, capture significan
 `docker compose ps` or `docker ps` checks the container status.
 
 `docker stop <container_id_or_name>` stops a particular container, useful for stopping attacks.
-
-`cicflowmeter -f captures/attacker_traffic.pcap -c attacker_flows.csv`
-
-`./cfm captures/attacker_traffic.pcap outputs/`
-
-`./cfm captures/benign_traffic.pcap outputs/`
-
-`/home/weluv/CMPE-272/data/`
-
-`editcap -A "2017-07-07 5:00:00" -B "2017-07-07 5:30:00" data/Friday-WorkingHours.pcap data/FridaySlice.pcap`
-
-\usr\include\pcap
-
-sudo java -Djava.library.path="\usr\include\pcap" -jar CICFlowMeterV3.jar
-
-sudo java -Djava.library.path="\usr\lib" -jar CICFlowMeterV3.jar
-
-find . -name "*:Zone.Identifier" -type f -delete
-
-chmod +x gradlew
-
-./gradlew execute
-
-sudo reordercap captures/attacker_traffic.pcap captures/attacker_traffic_order.pcap
-
-sudo reordercap benign_traffic_train_2.pcap benign_traffic_train_2_order.pcap
