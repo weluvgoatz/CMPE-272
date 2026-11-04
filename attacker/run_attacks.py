@@ -189,15 +189,22 @@ ATTACKS = [port_scan, dos_hulk, dos_slowhttptest, ddos, brute_force_ssh, brute_f
 
 
 def main():
-    scenarios = list(ATTACKS)
-    random.shuffle(scenarios)
-    print(f"[+] Running {len(scenarios)} attack scenarios against {VICTIM}", flush=True)
-    for fn in scenarios:
-        fn()
-        gap = random.uniform(5, 15)
-        print(f"[+] Sleeping {gap:.1f}s before next scenario", flush=True)
-        time.sleep(gap)
-    print(f"[+] Done. Attack log written to {LOG_PATH}", flush=True)
+    try:
+      while True:
+        scenarios = list(ATTACKS)
+        random.shuffle(scenarios)
+        print(f"[+] Running {len(scenarios)} attack scenarios against {VICTIM}", flush=True)
+        for fn in scenarios:
+            fn()
+            gap = random.uniform(5, 15)
+            print(f"[+] Sleeping {gap:.1f}s before next scenario", flush=True)
+            time.sleep(gap)
+        print(f"[+] Done. Attack log written to {LOG_PATH}", flush=True)
+        time.sleep(1)
+
+    except KeyboardInterrupt:
+      # This block triggers when you press Ctrl+C
+      print("\nAttacks stopped gracefully by user.")
 
 
 if __name__ == "__main__":

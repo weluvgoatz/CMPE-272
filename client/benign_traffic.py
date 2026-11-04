@@ -9,7 +9,7 @@ def http_burst():
             print(f"[http] {r.status_code}", flush=True)
         except requests.RequestException as e:
             print(f"[http] failed: {e}", flush=True)
-        time.sleep(random.uniform(0.2, 2.0))
+        time.sleep(random.uniform(0.1, 1.0))
 
 def ping_check():
     try:
@@ -21,4 +21,4 @@ def ping_check():
 while True:
     action = random.choice([http_burst, ping_check])
     action()
-    time.sleep(random.uniform(1, 10))
+    time.sleep(random.uniform(0.1, 1))

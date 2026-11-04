@@ -59,15 +59,9 @@ Thus, we have generated our test data.
 
 Here, we need to keep the benign/attack generation scripts running for a long time and then feed them into fixed_data/ as a csv so that our model can be trained with them. It's important to keep the training data generated here separate from the test data generated previously.
 
-# Training Model - HGB
+To generate only attacks, you should probably stop the client Docker container.
 
-Paste the 5 CSVs from the CIC IDS 2017 Dataset (Engelen et al's fix) into a `fixed_data/` directory alongside `src/`.
-
-Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
-
-Install `requirements.txt` by running `pip install -r requirements.txt` and run `src/model.ipynb` in Jupyter (Run `jupyter lab` and follow the instructions).
-
-# Model predictions
+# Process data
 
 First, you may want to reorder the pcap files:
 
@@ -75,9 +69,23 @@ First, you may want to reorder the pcap files:
 
 `sudo reordercap benign_traffic.pcap benign_traffic_order.pcap`
 
+or so...
+
 Now you'll have a `/captures/` directory with attacker_traffic.pcap and benign_traffic.pcap. Run the fixed CICFlowMeter (Engelen et al's fix) on this directory.
 
-Copy the produced CSVs to the `/data/` directory.
+Copy the produced CSVs to the `/data/` directory, if they aren't there already.
+
+# Training Model - HGB
+
+Paste the 5 CSVs from the CIC IDS 2017 Dataset (Engelen et al's fix) into a `fixed_data/` directory alongside `src/`.
+
+If you have new training data generated, paste it in `scale_data` directory alongside `src/`, and separate it into attacks and benign sub folders. 
+
+Make sure you have `sklearn`, `jupyter` and `imblearn` installed in your current environment.
+
+Install `requirements.txt` by running `pip install -r requirements.txt` and run `src/model.ipynb` in Jupyter (Run `jupyter lab` and follow the instructions).
+
+# Model predictions
 
 Finally, run `new_predict.py`. It'll have a mid accuracy for now...
 
@@ -115,4 +123,6 @@ chmod +x gradlew
 
 ./gradlew execute
 
-sudo reordercap attacker_traffic.pcap attacker_traffic_order.pcap
+sudo reordercap captures/attacker_traffic.pcap captures/attacker_traffic_order.pcap
+
+sudo reordercap benign_traffic_train_2.pcap benign_traffic_train_2_order.pcap
