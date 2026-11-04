@@ -24,7 +24,7 @@ Now that you should be inside the container:
 
 `ip a`
 
-`tcpdump -i eth0 -w /captures/benign_traffic.pcap`  
+`tcpdump -i eth0 -w /captures/benign_traffic_test.pcap`  
 
 and then `Ctrl+C` after a couple moments. If you want to exit the monitor interface, run `Ctrl+D` instead.
 
@@ -49,9 +49,13 @@ The attack type names (`PortScan`, `DoS Hulk`, `DoS Slowhttptest`, `DDoS`, `SSH-
 Labeling captured flows with these attack windows (instead of leaving everything
 `BENIGN`) is a separate follow-up step, not yet wired in.
 
+You must stop the client container before monitoring the attack traffic:
+
+`docker stop cmpe-272-client-1`
+
 Run this while the python script is running:
 
-`tcpdump -i eth0 -s 0 -w /captures/attacker_traffic.pcap` 
+`tcpdump -i eth0 -s 0 -w /captures/attacker_traffic_test.pcap` 
 
 Thus, we have generated our test data.
 
@@ -65,9 +69,9 @@ To generate only attacks, you should probably stop the client Docker container.
 
 First, you may want to reorder the pcap files:
 
-`sudo reordercap attacker_traffic.pcap attacker_traffic_order.pcap`
+`sudo reordercap attacker_traffic_test.pcap attacker_traffic_test_order.pcap`
 
-`sudo reordercap benign_traffic.pcap benign_traffic_order.pcap`
+`sudo reordercap benign_traffic_test.pcap benign_traffic_test_order.pcap`
 
 or so...
 

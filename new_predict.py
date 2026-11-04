@@ -13,10 +13,10 @@ feature_cols = joblib.load("src/feature_columns.joblib")   # exact training colu
 model        = joblib.load("src/hgb_model.joblib")
 le           = joblib.load("src/label_encoder.joblib")
 
-data_benign = pd.read_csv("data/benign_traffic_order.pcap_Flow.csv")
+data_benign = pd.read_csv("data/benign_traffic_test_order.pcap_Flow.csv")
 data_benign['Label'] = 'BENIGN'
 
-data_attack = pd.read_csv("data/attacker_traffic_order.pcap_Flow.csv")
+data_attack = pd.read_csv("data/attacker_traffic_test_order.pcap_Flow.csv")
 data_attack['Label'] = 'ATTACK'
 
 data = pd.concat([data_benign, data_attack], ignore_index=True)
