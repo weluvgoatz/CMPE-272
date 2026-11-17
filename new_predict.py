@@ -101,7 +101,9 @@ print(le.classes_)
 y_pred = model.predict(X)
 print(f"Test accuracy: {accuracy_score(y_test, y_pred):.4f}")
 print(f"Test F1:       {f1_score(y_test, y_pred):.4f}")
+print("Confusion matrix: ")
 print(confusion_matrix(y_test, y_pred))
+print("Classification report: ")
 print(classification_report(y_test, y_pred, target_names=["Benign", "Attack"], digits=4))
 
 """
